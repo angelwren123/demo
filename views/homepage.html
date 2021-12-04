@@ -1,0 +1,141 @@
+<div class="row">
+          
+            
+            
+            <h1 style="text-align: center; color: rgb(0, 0, 0);font-weight: bolder; ">QUỐC'S SHOP</h1> 
+            <div class="col-md-3">
+              
+               <h2>PHÂN LOẠI</h2>
+              <hr>
+              <div class="col">
+                <div class="list-group" id="list-tab" role="tablist">
+                  <a class="list-group-item list-group-item-action" id="list-home-list" data-bs-toggle="list" href="" ng-click="phanloai('nike')" role="tab" aria-controls="list-home">NIKE</a>
+                  <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list" href="#list-profile" ng-click="phanloai('jordan')" role="tab" aria-controls="list-profile">JORDAN</a>
+                  <a class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list" href="#list-messages" ng-click="phanloai('converse')" role="tab" aria-controls="list-messages">CONVERSE</a>
+                  <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" ng-click="phanloai('adidas')" role="tab" aria-controls="list-settings">ADIDAS</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-9">
+            <div class="ml-auto">
+              <label for="">Sắp Xếp Theo Giá</label>
+              <select  name="" id="" ng-model="sort">
+                <option selected value="">Mặc Định</option>
+                <option value="-price">Cao Tới Thấp</option>
+                <option value="price">Thấp Tới Cao</option>
+                <option value="name">A > Z</option>
+                <option value="-name">Z > A</option>
+              </select>
+              <!--  -->
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" style="float: right;">
+                <i class="fas fa-shopping-cart"></i>
+              </button>
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Giỏ hàng</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div id="hienthigiohang">
+                      <div id="giohangchuaco" ng-if="newArr.length===0">
+                        <h2>Không có sản phẩm nào</h2>
+                      </div>
+                      <div id="giohangdaco" ng-if="newArr.length!==0"> 
+                      <table style="text-align: center;" class="table" >
+                        <thead  class="table-secondary">
+                            <tr>
+                                <th>Hình</th>
+                                <th>Sản phẩm</th>
+                                <th>Đơn giá</th>    
+                                <th>Số lượng</th> 
+                                <th></th>     
+                                <th></th>                      
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="i in newArr" ng-init="i.soluong =1">                       
+                            <tr >
+                                <td><img src="{{i.img}}" style="width:50px" alt=""></td>
+                                <td>{{i.name}}</td>
+                                <td>{{i.price*i.soluong|currency:'$':0}}</td>
+                                <td><input type="number" ng-model="i.soluong" name="" value="1" min="1" id="" style="width: 65px;" ng-change="total()"></td>    
+                                <td><button type="submit" ng-click="delete(i)" class="btn btn-danger"><i class="fas fa-trash"></i></button></td>    
+                                <!-- <i class="fas fa-trash"></i>                     -->
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <td colspan="6";>Tổng tiền: {{tongtien | currency:'$':0}}</td>
+                          </tr>
+                        </tfoot>                        
+                    </table>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                      <button type="button" class="btn btn-success" onclick="thanhtoan()">Thanh toán</button>
+                    </div>
+                  </div>
+                  </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+            <hr>
+            <div ng-if="flag==true">
+            <div class="row row-cols-1 row-cols-md-3 g-3">
+              <div class="col" ng-repeat="i in items|limitTo:pageSize:begin|orderBy:sort|filter:search.Field">
+                <div class="card h-100">
+                  <img src="{{i.img}}" class="card-img-top" alt="...">
+                  <div class="card-body" style="text-align: center;">
+                    <h5 class="card-title">{{i.name}}</h5>
+                    <h4 class="card-text" style="color: red;text-align: center;">{{i.price|currency:'$':0}}</h4>
+                    <button class="btn btn-primary" ng-click="add(i)">ADD TO CART</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+            <!--  -->
+            <div ng-if="flag==false">
+              <div class="row row-cols-1 row-cols-md-3 g-3">
+                <div class="col" ng-repeat="i in category|limitTo:pageSize:begin|orderBy:sort|filter:search.Field">
+                  <div class="card h-100">
+                    <img src="{{i.img}}" class="card-img-top" alt="...">
+                    <div class="card-body" style="text-align: center;">
+                      <h5 class="card-title">{{i.name}}</h5>
+                      <h4 class="card-text" style="color: red;text-align: center;" >{{i.price|currency:'$':0}}</h4>
+                      <button class="btn btn-primary" ng-click="add(i)">ADD TO CART</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+           
+          <hr>
+          
+          
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <li class="page-item">
+                <a class="page-link" ng-click="first()" ><<<</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link"  ng-click="prev()" ><</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link"  ng-click="next()">></a>
+              </li>
+                <a class="page-link"  ng-click="last()">>>></a>
+              </li>
+            </ul>
+          </nav>
+          <!--  -->
+</div>
+
+
